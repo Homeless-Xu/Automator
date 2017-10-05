@@ -9,6 +9,7 @@
 
 
 
+
 🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸 MP4 视频无损合并 2017-10-5-00 ✔︎🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸
 
 🔸 why  
@@ -100,5 +101,34 @@
 
 
 
-🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸
+🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸文件显影切换 2017-10-5-15 ✔︎︎🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸
+
+🔸 显隐文件 
+        
+    Mac 10.11 +  可以直接用 ⌘+⇧+. 来快速显隐了
+
+    Mac 10.8 + 的操作系统
+        defaults write com.apple.finder AppleShowAllFiles -bool true; killall Finder   ➜ 显示文件并重启Finder
+        defaults write com.apple.finder AppleShowAllFiles -bool false; killall Finder  ➜ 隐藏文件并重启Finder
+
+    Mac 10.8 - 的系统
+        defaults write com.apple.finder AppleShowAllFiles TRUE ; killall Finder        ➜ 显示文件并重启Finder
+        defaults write com.apple.finder AppleShowAllFiles FALSE ; killall Finder       ➜ 隐藏文件并重启Finder
+
+
+🔸 Automator 详解
+
+    只要执行脚本就可以了. 就4行. 非常简单
+    用read 命令判断当前显隐状态, 如果当前是显示的, 那么就进行隐藏...
+
+    STATUS=`defaults read com.apple.finder AppleShowAllFiles`
+
+    if [ $STATUS == 1 ]
+        then  defaults write com.apple.finder AppleShowAllFiles -bool false; killall Finder 
+        else  defaults write com.apple.finder AppleShowAllFiles -bool true; killall Finder
+    fi
+
+
+
+
 
