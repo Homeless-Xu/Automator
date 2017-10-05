@@ -1,16 +1,15 @@
 # Automator
 
-    自动化 Mac 常用操作!    带✔︎的都是亲测可用的!
+    • 自动化 Mac 常用操作!    
+    • 带✔︎的都是亲测可用的!
+    • 使用方法: 下载对应ZIP文件, 解压就能用.
+    • 自定义修改方法: 参考下面介绍,有点IT基础很容易改的!
 
 
 
 
 
-
-
-
-
-🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸 MP4 视频无损合并 2017-10-5-00 ✔︎🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸
+🔵🔵🔵🔵🔵🔵🔵🔵🔵🔵 MP4 视频无损合并 2017-10-5-00 ✔︎ 🔵🔵🔵🔵🔵🔵🔵🔵🔵🔵🔵🔵🔵
 
 🔸 why  
 
@@ -101,7 +100,7 @@
 
 
 
-🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸文件显影切换 2017-10-5-15 ✔︎︎🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸
+🔵🔵🔵🔵🔵🔵🔵🔵🔵🔵🔵 系统文件显影切换 2017-10-5-15 ✔︎ 🔵🔵🔵🔵🔵🔵🔵🔵🔵🔵🔵🔵
 
 🔸 显隐文件 
         
@@ -128,6 +127,122 @@
         else  defaults write com.apple.finder AppleShowAllFiles -bool true; killall Finder
     fi
 
+
+
+
+
+🔵🔵🔵🔵🔵🔵🔵🔵🔵🔵🔵🔵 锁定/解锁文件 2017-10-5-16 ✔︎🔵🔵🔵🔵🔵🔵🔵🔵🔵🔵🔵🔵🔵
+
+🔸 why 
+
+    有些重要文件,你需要特别注意.不要被自己/他人随便删除了!这时候你就可以用 这个文件加锁功能.
+    其实这个是文件的一个额外属性,很少用,但是非常有用! 类似Linux文件的普通权限: 读/写/执行
+    该属性的作用就是, 就算你有电脑的最高控制器都不能直接删除文件. 除非你先解锁这个文件
+
+    属性	           chflags中使用	           详述
+    系统级只能添加	  sappnd, sappend	         文件不能够截断或者复写(overwrite)，只能通过append模式添加内容
+    用户级只能添加	  uappnd, uappend	         文件不能够截断或者复写(overwrite)，只能通过append模式添加内容
+    系统级只读		schg, schange, simmutable  不能够重命名、移动、删除、更改内容
+    用户级只读		uchg, uchange, uimmutable  不能够更改内容
+
+    命令详细参考 http://zhengyi.me/2016/06/02/learning-shell-chflags/
+
+
+    ⦿ 查看文件的额外属性
+        ✘✘∙𝒗 Desktop ll 1.mp4
+        -rw-------@ 1 v  staff    10M Sep 24 11:30 1.mp4  ➜ 有@ 就说明该文件是有额外属性的.
+
+    ⦿ 修改文件的额外属性: chflags 命令;  类似 chown 来修改权限.
+      chflags ➜ change file flags 
+
+
+🔸 uappend 只读属性 
+
+    chflags -R uappend filename  ➜ 加锁文件
+    chflags -R nouappend filename ➜ 解锁文件
+
+
+🔸 Automator 详解
+
+    1. Get selected Finder items 
+    2. Run shell script 
+    3. Run shell script 的 shell 选择 bash 
+    4. Run shell script 的 pass input 选择 as arguments 
+    5. Run shell script 的加锁脚本内容:
+        for f in "$@"
+        do
+            chflags -R uappend "$f"
+        done
+
+
+    5. Run shell script 的解锁脚本内容:
+        for f in "$@"
+        do
+            chflags -R nouappend "$f"
+        done
+
+
+
+🔸 Automator 用法
+
+    两个机器人, 一个加锁, 一个解锁.
+    把想要加锁的文件拖到 加锁的机器人上面. 然后你就删不了那个文件了! 但是还能正常改.
+    把加锁后的文件拖到 解锁的机器人上面. 就恢复正常了.能改`能删.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+🔵🔵🔵🔵🔵🔵🔵🔵🔵🔵🔵🔵🔵🔵🔵🔵   Misc   🔵🔵🔵🔵🔵🔵🔵🔵🔵🔵🔵🔵🔵🔵🔵🔵🔵🔵🔵
+
+🔵 内存释放 ?
+
+    purge命令可以清除内存和硬盘的缓存，与重启Mac的效果差不多。
+    purge命令可以让不活跃的系统内存转变为可以使用的内存。你只需在终端中输入下面的命令即可。
+    purge
+
+
+
+
+🔵 使用open命令开启多个相同应用
+
+    open命令可以在终端中开启应用，使用-n可以开启多个相同应用。比如你可以使用下面的命令开启新Safari窗口
+
+    open -n /Applications/Safari.app/
+
+
+
+🔵 创建有密码保护的压缩文件 ✔︎
+
+    你可以通过下面的命令将桌面上的macx.txt文件创建成有密码保护压缩文件protected.zip。
+
+    zip -e protected.zip ~/Desktop/1.mp4
+
+
+
+🔵 个人文件显隐
+
+chflags nohidden ~/
+
+隐藏-> chflags hidden filename
+
+显示-> chflags nohidden filename
+
+命令后面要跟一个空格，然后把文件或文件夹拖入到终端里面
 
 
 
